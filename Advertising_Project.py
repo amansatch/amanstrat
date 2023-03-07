@@ -10,4 +10,4 @@ This app predicts the **Advertising** type!
 """)
 
 st.sidebar.header('User Input Parameters')
-st.write(df)
+#st.write(df)
