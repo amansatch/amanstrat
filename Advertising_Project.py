@@ -1,66 +1,51 @@
 import streamlit as st
-import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
+from sklearn import datasets
+from sklearn.ensemble import RandomForestClassifier
 
-st.title("Advertising Data Analysis")
+df = pd.read_csv("Advertising.csv")
 
-@st.cache
-def load_data():
-    adv = pd.read_csv("Advertising.csv")
-    return adv
+st.write("""
+# Simple Advertising Prediction App
 
-adv = load_data()
+This app predicts the **Advertising** type!
+""")
 
-st.write("The first 5 rows of the dataset:")
-st.dataframe(adv.head())
+st.sidebar.header('User Input Parameters')
 
-st.write("The dataset contains", adv.shape[0], "rows and", adv.shape[1], "columns.")
+def user_input_features():
+    sepal_length = st.sidebar.slider('TV length', 4.3, 7.9, 5.4)
+    sepal_width = st.sidebar.slider('Sepal width', 2.0, 4.4, 3.4)
+    petal_length = st.sidebar.slider('Petal length', 1.0, 6.9, 1.3)
+    petal_width = st.sidebar.slider('Petal width', 0.1, 2.5, 0.2)
+    data = {'sepal_length': sepal_length,
+            'sepal_width': sepal_width,
+            'petal_length': petal_length,
+            'petal_width': petal_width}
+    features = pd.DataFrame(data, index=[0])
+    return features
 
-st.write("Summary statistics of the dataset:")
-st.dataframe(adv.describe())
+df = user_input_features()
 
-st.write("Missing values in the dataset:")
-st.dataframe(adv.isnull().sum())
+st.subheader('User Input parameters')
+st.write(df)
 
-# outlier analysis
-st.write("Outlier analysis of the dataset:")
-st.write("TV:")
-st.pyplot(sns.boxplot(adv['TV']))
-st.write("Radio:")
-st.pyplot(sns.boxplot(adv['Radio']))
-st.write("Newspaper:")
-st.pyplot(sns.boxplot(adv['Newspaper']))
-st.write("Sales:")
-st.pyplot(sns.boxplot(adv['Sales']))
+iris = datasets.load_iris()
+X = iris.data
+Y = iris.target
 
-st.write("Relationship between advertising expenses and sales:")
-sns.pairplot(adv,x_vars=['TV','Radio','Newspaper'],y_vars=['Sales'],kind='scatter')
-st.pyplot(plt)
+clf = RandomForestClassifier()
+clf.fit(X, Y)
 
-st.write("Correlation heatmap of the dataset:")
-sns.heatmap(adv.corr(),annot=True)
-st.pyplot(plt)
+prediction = clf.predict(df)
+prediction_proba = clf.predict_proba(df)
 
-X = adv['TV'].values.reshape(-1,1)
-y = adv['Sales'].values.reshape(-1,1)
-X_train,X_test,y_train,y_test = train_test_split(X,y,train_size=0.8,test_size=0.2)
+st.subheader('Class labels and their corresponding index number')
+st.write(iris.target_names)
 
-regressor = LinearRegression()
-regressor.fit(X_train,y_train)
+st.subheader('Prediction')
+st.write(iris.target_names[prediction])
+#st.write(prediction)
 
-st.write("Linear Regression Model Results:")
-st.write("Intercept:", regressor.intercept_)
-st.write("Coefficient:", regressor.coef_)
-
-plt.scatter(X_train,y_train)
-plt.plot(X_train,0.056*X_train+6.859,'black')
-st.pyplot(plt)
-
-y_pred = regressor.predict(X_test)
-
-plt.scatter(X_test,y_test)
-plt.plot(X_test,0.056*X_test+6.859,'black')
-st.pyplot(plt)
-
+st.subheader('Prediction Probability')
+st.write(prediction_proba)
