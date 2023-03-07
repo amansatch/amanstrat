@@ -12,5 +12,7 @@ This app predicts the **Advertising** type!
 st.sidebar.header('User Input Parameters')
 
 df = df.drop('Unnamed: 0', axis=1)
+fig = px.histogram(df, x="sales")
+fig.show()
 
 
