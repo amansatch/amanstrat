@@ -27,6 +27,6 @@ for i in range(0,50):
     w1 = w1 - lr*dew1
 
     error = ((y-yh)**2).mean()
-    print(i,error)
+    st.write(i,error)
 
 
