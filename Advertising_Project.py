@@ -11,8 +11,6 @@ This app predicts the **Advertising** type!
 
 st.sidebar.header('User Input Parameters')
 
-tv = 56
-sales = w0 + w1 * tv
-st.write(sales)
+df = df.drop('Unnamed: 0', axis=1)
 
 
