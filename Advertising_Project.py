@@ -1,50 +1,46 @@
 import streamlit as st
 import pandas as pd
-from sklearn import datasets
-from sklearn.ensemble import RandomForestClassifier
+import numpy as np
+from sklearn.linear_model import LinearRegression
 
-df = pd.read_csv("Advertising.csv")
+df = pd.read_csv('Advertising.csv')
 
 st.write("""
-# Simple Advertising Prediction App
-
-This app predicts the **Advertising** type!
+# Number of Sales Prediction App
+This app predicts the *Number of Sales*!
 """)
+
+st.write("Below are the data:")
+
+st.write(df)
 
 st.sidebar.header('User Input Parameters')
 
 def user_input_features():
-    adsTV = st.sidebar.slider('TV length', 4.3, 7.9, 5.4)
-    adsRadio = st.sidebar.slider('Sepal width', 2.0, 4.4, 3.4)
-    adsNewspaper = st.sidebar.slider('Petal length', 1.0, 6.9, 1.3)
-        data = {'sepal_length': sepal_length,
-            'sepal_width': sepal_width,
-            'petal_length': petal_length
-            }
+    tv_value = st.sidebar.slider('TV Value', 0, 150, 300)
+    radio_value = st.sidebar.slider('Radio Value', 0, 25, 50)
+    newspaper_value = st.sidebar.slider('Newspaper Value', 0, 75, 150)
+    data = {'TV': tv_value,
+            'Radio': radio_value,
+            'Newspaper': newspaper_value}
     features = pd.DataFrame(data, index=[0])
     return features
 
-df = user_input_features()
+uif = user_input_features()
 
 st.subheader('User Input parameters')
-st.write(df)
+st.write(uif)
 
-iris = datasets.load_iris()
-X = iris.data
-Y = iris.target
+data = pd.read_csv('Advertising.csv')
+data = data.drop(data.columns[0], axis=1)
 
-clf = RandomForestClassifier()
-clf.fit(X, Y)
+x = data[['TV', 'Radio', 'Newspaper']]
+y = data[ 'Sales' ]
 
-prediction = clf.predict(df)
-prediction_proba = clf.predict_proba(df)
+regr = LinearRegression()
+regr.fit(x,y)
 
-st.subheader('Class labels and their corresponding index number')
-st.write(iris.target_names)
+prediction = regr.predict(uif)
 
 st.subheader('Prediction')
-st.write(iris.target_names[prediction])
-#st.write(prediction)
-
-st.subheader('Prediction Probability')
-st.write(prediction_proba)
+st.write(prediction[0])
