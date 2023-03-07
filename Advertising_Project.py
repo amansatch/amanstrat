@@ -1,9 +1,12 @@
 import streamlit as st
-import numpy as np
 import pandas as pd
+from sklearn import datasets
+from sklearn.ensemble import RandomForestClassifier
+df = pd.read_csv('Advertising.csv')
 
-st.header("My first Streamlit App")
-st.write(pd.DataFrame({
-    'Intplan': ['yes', 'yes', 'yes', 'no'],
-    'Churn Status': [0, 0, 0, 1]
-}))
+st.write("""
+# Simple Advertising Prediction App
+This app predicts the **Advertising** type!
+""")
+
+st.sidebar.header('User Input Parameters')
