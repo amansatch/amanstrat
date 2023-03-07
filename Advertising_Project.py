@@ -16,10 +16,5 @@ This app predicts the **Advertising** type!
 
 st.sidebar.header('User Input Parameters')
 
-# Outlier Analysis
-fig, axs = plt.subplots(3, figsize = (5,5))
-plt1 = sns.boxplot(advertising['TV'], ax = axs[0])
-plt2 = sns.boxplot(advertising['Newspaper'], ax = axs[1])
-plt3 = sns.boxplot(advertising['Radio'], ax = axs[2])
-plt.tight_layout()
+advertising.shape
 
