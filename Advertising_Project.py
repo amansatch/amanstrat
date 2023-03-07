@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from sklearn import datasets
 from sklearn.ensemble import RandomForestClassifier
-df = pd.read_csv('Advertising.csv')
+df = pd.read_csv('https://github.com/amansatch/amanstrat/blob/main/Advertising.csv')
 
 st.write("""
 # Simple Advertising Prediction App
